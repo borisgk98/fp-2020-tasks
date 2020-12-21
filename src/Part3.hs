@@ -1,3 +1,5 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module Part3 where
 
 ------------------------------------------------------------
@@ -5,7 +7,9 @@ module Part3 where
 --
 -- Проверить, является ли число N простым (1 <= N <= 10^9)
 prob18 :: Integer -> Bool
-prob18 = error "Implement me!"
+prob18 1 = False
+prob18 2 = True
+prob18 n = (filter ((==0) . (mod n)) [2..((floor . sqrt . fromIntegral $ n) + 1)]) == []
 
 ------------------------------------------------------------
 -- PROBLEM #19
@@ -13,8 +17,42 @@ prob18 = error "Implement me!"
 -- Вернуть список всех простых делителей и их степеней в
 -- разложении числа N (1 <= N <= 10^9). Простые делители
 -- должны быть расположены по возрастанию
+
+-- Принемает n и (k, 0), возращает (k, сколько раз n делиться на k)
+prob19_div :: Integer -> (Integer, Int) -> (Integer, Int)
+prob19_div n (x, k) = if | n < x -> (x, k)
+                         | n `mod` x == 0 -> prob19_div (n `div` x) (x, k + 1)
+                         | otherwise -> (x, k)
+
+-- Принемает n и k, возращает (k, сколько раз n делиться на k)
+prob19_g :: Integer -> Integer -> (Integer, Int)
+prob19_g n x = prob19_div n (x, 0)
+
+-- Принемает n и k, возращает n, поделенное максимально на k
+prob19_k :: Integer -> Integer -> Integer
+prob19_k n k = if n `mod` k == 0 then prob19_k (n `div` k) k else n
+
+-- Разложение n на простые множители (запуск - prob19_f n 2 [])
+prob19_f :: Integer -> Integer -> [Integer] -> [Integer]
+prob19_f 1 _ a = a
+prob19_f n k a = if | k > ((floor . sqrt . fromIntegral $ n) + 1) -> n : a
+                    | n `mod` k == 0 -> prob19_f (prob19_k n k) (k + 1) (k : a)
+                    | otherwise -> prob19_f n (k + 1) a
+
+prob19_r :: Integer -> Integer -> [(Integer, Int)] -> [(Integer, Int)]
+prob19_r 1 _ a = a
+prob19_r n x a = if | n `mod` x /= 0 -> prob19_r n (x + 1) a
+                    | a == [] -> prob19_r (n `div` x) x [(x, 1)]
+                    | (==x) . fst . head $ a -> prob19_r (n `div` x) x ((x, (+1) . snd . head $ a) : (tail a))
+                    | prob18 n -> (n, 1) : a
+                    | otherwise -> prob19_r n (x + 1) a
+
+reverseList :: [a] -> [a]
+reverseList [] = []
+reverseList (x:xs) = reverseList xs ++ [x]
+
 prob19 :: Integer -> [(Integer, Int)]
-prob19 = error "Implement me!"
+prob19 n = reverseList ((prob19_g n) <$> (prob19_f n 2 []))
 
 ------------------------------------------------------------
 -- PROBLEM #20

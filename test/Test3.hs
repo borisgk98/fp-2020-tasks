@@ -30,6 +30,9 @@ test18 :: TestTree
 test18 = testGroup "P18"
   [ testCase "prob18 17 == T" $ prob18 17 @?= True
   , testCase "prob18 1 == F" $ prob18 1 @?= False
+  , testCase "prob18 2 == T" $ prob18 2 @?= True
+  , testCase "prob18 18 == F" $ prob18 18 @?= False
+  , testCase "prob18 123456789 == F" $ prob18 123456789 @?= False
   ]
 
 test19 :: TestTree
