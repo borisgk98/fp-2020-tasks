@@ -61,15 +61,22 @@ prob19 n = reverseList ((prob19_g n) <$> (prob19_f n 2 []))
 -- Совершенное число равно сумме своих делителей (меньших
 -- самого числа)
 prob20 :: Integer -> Bool
-prob20 = error "Implement me!"
+prob20 1 = False
+prob20 n = n == (foldr (+) 1 ((\x -> x + n `div` x) <$> (filter ((==0) . (mod n)) [2..(floor . sqrt . fromIntegral $ n)])))
 
 ------------------------------------------------------------
 -- PROBLEM #21
 --
 -- Вернуть список всех делителей числа N (1<=N<=10^10) в
 -- порядке возрастания
+prob21_merge :: Eq a => [a] -> [a] -> [a]
+prob21_merge []     ys     = ys
+prob21_merge (x:xs) ys = x : prob21_merge xs ys
+
 prob21 :: Integer -> [Integer]
-prob21 = error "Implement me!"
+prob21 n = if n == (floor . sqrt . fromIntegral $ n) * (floor . sqrt . fromIntegral $ n)
+          then prob21_merge (filter ((==0) . (mod n)) [1..((floor . sqrt . fromIntegral $ n) - 1)]) (reverseList ((\x -> n `div` x) <$> (filter ((==0) . (mod n)) [1..(floor . sqrt . fromIntegral $ n)])))
+          else prob21_merge (filter ((==0) . (mod n)) [1..(floor . sqrt . fromIntegral $ n)]) (reverseList ((\x -> n `div` x) <$> (filter ((==0) . (mod n)) [1..(floor . sqrt . fromIntegral $ n)])))
 
 ------------------------------------------------------------
 -- PROBLEM #22
