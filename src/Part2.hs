@@ -61,7 +61,7 @@ prob10 (Color r g b) = if | r > g && r > b -> Just . Red $ r
 --
 -- Найти сумму элементов дерева
 instance Functor Tree where
-  fmap f (Tree l x r) = (Tree (fmap (fmap f) l) (f x) (fmap (fmap f) l))
+  fmap f (Tree l x r) = (Tree (fmap (fmap f) l) (f x) (fmap (fmap f) r))
 
 prob11 :: Num a => Tree a -> a
 prob11 (Tree Nothing x Nothing) = x
@@ -126,8 +126,21 @@ prob13 v (Tree (Just l) x (Just r)) = if | x == v -> Just (Tree (Just l) x (Just
 --
 -- Заменить () на числа в порядке обхода "правый, левый,
 -- корень", начиная с 1
+prob14_f :: Tree () -> Int -> (Int, Tree Int)
+prob14_f (Tree Nothing _ Nothing) curr = ((curr + 1), Tree Nothing (curr + 1) Nothing)
+prob14_f (Tree (Just l) _ Nothing) curr = let (currl, ll) = prob14_f l curr
+                                          in
+                                          (currl + 1, (Tree (Just ll) (currl + 1) Nothing))
+prob14_f (Tree Nothing _ (Just r)) curr = let (currr, rr) = prob14_f r curr
+                                          in
+                                          (currr + 1, (Tree Nothing (currr + 1) (Just rr)))
+prob14_f (Tree (Just l) _ (Just r)) curr = let (currr, rr) = prob14_f r curr
+                                               (currl, ll) = prob14_f l currr
+                                           in
+                                           (currl + 1, (Tree (Just ll) (currl + 1) (Just rr)))
+
 prob14 :: Tree () -> Tree Int
-prob14 = error "Implement me!"
+prob14 t = snd (prob14_f t 0)
 
 ------------------------------------------------------------
 -- PROBLEM #15
