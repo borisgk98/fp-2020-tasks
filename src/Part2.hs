@@ -109,7 +109,17 @@ prob12 t = let (_, _, b) = prob12_f t
 -- поддерево, в корне которого находится значение, если оно
 -- есть в дереве поиска; если его нет - вернуть Nothing
 prob13 :: Ord a => a -> Tree a -> Maybe (Tree a)
-prob13 = error "Implement me!"
+prob13 v (Tree Nothing x Nothing) = if x == v then Just (Tree Nothing x Nothing) else Nothing
+prob13 v (Tree (Just l) x Nothing) = if | x == v -> Just (Tree (Just l) x Nothing)
+                                        | v > x -> Nothing
+                                        | otherwise -> prob13 v l
+prob13 v (Tree Nothing x (Just r)) = if | x == v -> Just (Tree Nothing x (Just r))
+                                        | v < x -> Nothing
+                                        | otherwise -> prob13 v r
+prob13 v (Tree (Just l) x (Just r)) = if | x == v -> Just (Tree (Just l) x (Just r))
+                                         | v < x -> prob13 v l
+                                         | v > x -> prob13 v r
+                                         | otherwise -> Nothing
 
 ------------------------------------------------------------
 -- PROBLEM #14
