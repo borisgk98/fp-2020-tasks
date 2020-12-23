@@ -158,7 +158,9 @@ prob15 (Tree a p (Just (Tree b q c))) = (Tree (Just (Tree a p b)) q c)
 -- Выполнить вращение дерева вправо относительно корня
 -- (https://en.wikipedia.org/wiki/Tree_rotation)
 prob16 :: Tree a -> Tree a
-prob16 = error "Implement me!"
+prob16 (Tree Nothing x r) = (Tree Nothing x r)
+prob16 (Tree (Just (Tree Nothing p b)) q c) = (Tree Nothing p (Just (Tree b q c)))
+prob16 (Tree (Just (Tree a p b)) q c) = (Tree a p (Just (Tree b q c)))
 
 ------------------------------------------------------------
 -- PROBLEM #17
