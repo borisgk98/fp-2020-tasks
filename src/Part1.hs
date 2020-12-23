@@ -86,7 +86,7 @@ prob4_f n k pref curr = if | n == k -> curr
 --prob4 n = if n > 0 then prob4 (n - 1) + prob4 (n - 2) else prob4 (n + 2) - prob4 (n + 1)
 
 prob4 :: Integer -> Integer
-prob4 n = prob4_f n 0 1 1
+prob4 n = prob4_f n 1 1 1
 
 
 ------------------------------------------------------------
