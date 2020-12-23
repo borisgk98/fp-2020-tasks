@@ -60,8 +60,14 @@ prob10 (Color r g b) = if | r > g && r > b -> Just . Red $ r
 -- PROBLEM #11
 --
 -- Найти сумму элементов дерева
+instance Functor Tree where
+  fmap f (Tree l x r) = (Tree (fmap (fmap f) l) (f x) (fmap (fmap f) l))
+
 prob11 :: Num a => Tree a -> a
-prob11 = error "Implement me!"
+prob11 (Tree Nothing x Nothing) = x
+prob11 (Tree (Just l) x Nothing) = (prob11 l) + x
+prob11 (Tree Nothing x (Just r)) = x + (prob11 r)
+prob11 (Tree (Just l) x (Just r)) = (prob11 l) + x + (prob11 r)
 
 ------------------------------------------------------------
 -- PROBLEM #12
