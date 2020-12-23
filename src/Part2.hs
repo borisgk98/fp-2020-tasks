@@ -1,3 +1,5 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module Part2 where
 
 import Part2.Types
@@ -39,7 +41,9 @@ prob8 (Color r g b) (Blue x) = (Color r g (b + x))
 -- Написать функцию, которая возвращает значение из
 -- ColorPart
 prob9 :: ColorPart -> Int
-prob9 = error "Implement me!"
+prob9 (Red x) = x
+prob9 (Green x) = x
+prob9 (Blue x) = x
 
 ------------------------------------------------------------
 -- PROBLEM #10
@@ -47,7 +51,10 @@ prob9 = error "Implement me!"
 -- Написать функцию, которая возвращает компонент Color, у
 -- которого наибольшее значение (если такой единственный)
 prob10 :: Color -> Maybe ColorPart
-prob10 = error "Implement me!"
+prob10 (Color r g b) = if | r > g && r > b -> Just . Red $ r
+                          | g > r && g > b -> Just . Green $ g
+                          | b > r && b > g -> Just . Blue $ b
+                          | otherwise -> Nothing
 
 ------------------------------------------------------------
 -- PROBLEM #11
