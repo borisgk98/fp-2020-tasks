@@ -29,9 +29,9 @@ prob7 (Blue x) = x >= 0 && x <= 255
 -- Написать функцию, которая добавляет в соответствующее
 -- поле значения Color значение из ColorPart
 prob8 :: Color -> ColorPart -> Color
-prob8 c (Red x) = c { red = x }
-prob8 c (Green x) = c { green = x }
-prob8 c (Blue x) = c { blue = x }
+prob8 (Color r g b) (Red x) = (Color (r + x) g b)
+prob8 (Color r g b) (Green x) = (Color r (g + x) b)
+prob8 (Color r g b) (Blue x) = (Color r g (b + x))
 
 ------------------------------------------------------------
 -- PROBLEM #9
