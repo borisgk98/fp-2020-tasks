@@ -72,10 +72,21 @@ prob3 step n = 1 + (prob3 step (step n))
 -- равны сумме двух предыдущих.
 --
 -- Число n по модулю не превосходит 10^5
+-- n k pref curr
+prob4_f :: Integer -> Integer -> Integer -> Integer -> Integer
+prob4_f 0 _ _ _ = 1
+prob4_f 1 _ _ _ = 1
+prob4_f n k pref curr = if | n == k -> curr
+                           | n > 0 -> prob4_f n (k + 1) (curr) (pref + curr)
+                           | otherwise -> prob4_f n (k - 1) (curr) (pref - curr)
+
+--prob4 :: Integer -> Integer
+--prob4 0 = 1
+--prob4 1 = 1
+--prob4 n = if n > 0 then prob4 (n - 1) + prob4 (n - 2) else prob4 (n + 2) - prob4 (n + 1)
+
 prob4 :: Integer -> Integer
-prob4 0 = 1
-prob4 1 = 1
-prob4 n = if n > 0 then prob4 (n - 1) + prob4 (n - 2) else prob4 (n + 2) - prob4 (n + 1)
+prob4 n = prob4_f n 0 1 1
 
 
 ------------------------------------------------------------
