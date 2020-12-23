@@ -148,7 +148,9 @@ prob14 t = snd (prob14_f t 0)
 -- Выполнить вращение дерева влево относительно корня
 -- (https://en.wikipedia.org/wiki/Tree_rotation)
 prob15 :: Tree a -> Tree a
-prob15 = error "Implement me!"
+prob15 (Tree l x Nothing) = (Tree l x Nothing)
+prob15 (Tree Nothing p (Just (Tree b q c))) = (Tree (Just (Tree Nothing p b)) q c)
+prob15 (Tree a p (Just (Tree b q c))) = (Tree (Just (Tree a p b)) q c)
 
 ------------------------------------------------------------
 -- PROBLEM #16
