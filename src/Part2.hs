@@ -77,8 +77,30 @@ prob11 (Tree (Just l) x (Just r)) = (prob11 l) + x + (prob11 r)
 -- элементы левого поддерева узла меньше элемента в узле,
 -- а все элементы правого поддерева -- не меньше элемента
 -- в узле)
+prob12_f :: Ord a => Tree a -> (a, a, Bool)
+prob12_f (Tree Nothing x Nothing) = (x, x, True)
+prob12_f (Tree (Just l) x Nothing) = let (mn, mx, b) = prob12_f l
+                                     in
+                                     if | b == False -> (min mn x, max mx x, False)
+                                        | mx >= x -> (min mn x, mx, False)
+                                        | otherwise -> (mn, x, True)
+prob12_f (Tree Nothing x (Just r)) = let (mn, mx, b) = prob12_f r
+                                     in
+                                     if | b == False -> (min mn x, max mx x, False)
+                                        | mn < x -> (mn, max x mx, False)
+                                        | otherwise -> (x, mx, True)
+prob12_f (Tree (Just l) x (Just r)) = let (mnr, mxr, br) = prob12_f r
+                                          (mnl, mxl, bl) = prob12_f l
+                                      in
+                                      if | br == False || bl == False -> (min (min mnl mnr) x, max (max mxr mxl) x, False)
+                                         | x <= mxl -> (min (min mnl mnr) x, max (max mxr mxl) x, False)
+                                         | x > mnr -> (min (min mnl mnr) x, max (max mxr mxl) x, False)
+                                         | otherwise -> (min (min mnl mnr) x, max (max mxr mxl) x, True)
+
 prob12 :: Ord a => Tree a -> Bool
-prob12 = error "Implement me!"
+prob12 t = let (_, _, b) = prob12_f t
+           in
+           b
 
 ------------------------------------------------------------
 -- PROBLEM #13
