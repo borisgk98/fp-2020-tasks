@@ -83,8 +83,19 @@ prob21 n = if n == (floor . sqrt . fromIntegral $ n) * (floor . sqrt . fromInteg
 --
 -- Подсчитать произведение количеств букв i в словах из
 -- заданной строки (списка символов)
+prob22_split_f :: String -> Char -> [String] -> [String]
+prob22_split_f [] _ curr = curr
+prob22_split_f s pref curr =  let ch = head s
+                              in
+                              if | ch == ' '  -> prob22_split_f (tail s) ch curr
+                                 | pref == ' ' -> prob22_split_f (tail s) ch ([head s] : curr)
+                                 | otherwise -> prob22_split_f (tail s) ch ((ch : (head curr)) : (tail curr))
+
+prob22_split :: String -> [String]
+prob22_split s = prob22_split_f s ' ' []
+
 prob22 :: String -> Integer
-prob22 = error "Implement me!"
+prob22 s = foldr (*) 1 (fmap (toInteger . length . (filter (=='i'))) (prob22_split s))
 
 ------------------------------------------------------------
 -- PROBLEM #23
