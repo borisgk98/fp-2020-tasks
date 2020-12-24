@@ -108,4 +108,5 @@ maxmod :: Integer -> Integer
 maxmod n = maxmod2 n 2 1
 
 prob5 :: Integer -> Integer -> Bool
+prob5 1 _ = True
 prob5 x y = (maxmod x) < y
