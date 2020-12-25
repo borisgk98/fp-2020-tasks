@@ -60,9 +60,12 @@ prob19 n = reverseList ((prob19_g n) <$> (prob19_f n 2 []))
 -- Проверить, является ли число N совершенным (1<=N<=10^10)
 -- Совершенное число равно сумме своих делителей (меньших
 -- самого числа)
+prob20_dsum :: Integer -> Integer
+prob20_dsum 1 = 0
+prob20_dsum n = (foldr (+) 1 ((\x -> x + n `div` x) <$> (filter ((==0) . (mod n)) [2..(floor . sqrt . fromIntegral $ n)])))
+
 prob20 :: Integer -> Bool
-prob20 1 = False
-prob20 n = n == (foldr (+) 1 ((\x -> x + n `div` x) <$> (filter ((==0) . (mod n)) [2..(floor . sqrt . fromIntegral $ n)])))
+prob20 n = n == (prob20_dsum n)
 
 ------------------------------------------------------------
 -- PROBLEM #21
@@ -126,7 +129,7 @@ prob24 n = let d = 1 + 8 * n
 -- Проверить, что запись числа является палиндромом (т.е.
 -- читается одинаково слева направо и справа налево)
 prob25 :: Integer -> Bool
-prob25 = error "Implement me!"
+prob25 x = (show x) == (reverse . show $ x)
 
 ------------------------------------------------------------
 -- PROBLEM #26
@@ -135,7 +138,7 @@ prob25 = error "Implement me!"
 -- сумма делителей одного (без учёта самого числа) равна
 -- другому, и наоборот
 prob26 :: Integer -> Integer -> Bool
-prob26 = error "Implement me!"
+prob26 x y = (prob20_dsum x) == (y) && (x) == (prob20_dsum y)
 
 ------------------------------------------------------------
 -- PROBLEM #27
