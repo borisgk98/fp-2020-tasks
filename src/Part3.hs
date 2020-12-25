@@ -145,8 +145,11 @@ prob26 x y = (prob20_dsum x) == (y) && (x) == (prob20_dsum y)
 --
 -- Найти в списке два числа, сумма которых равна заданному.
 -- Длина списка не превосходит 500
+--prob27_f :: Int -> [Int] -> Int -> Int -> Maybe (Int, Int)
+--prob27_f p v i j = if | j + i ==
+
 prob27 :: Int -> [Int] -> Maybe (Int, Int)
-prob27 = error "Implement me!"
+prob27 p v = error "Implement me!"
 
 ------------------------------------------------------------
 -- PROBLEM #28
